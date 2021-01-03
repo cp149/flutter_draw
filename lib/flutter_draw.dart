@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
           decoration: new BoxDecoration(
             image: new DecorationImage(
               image: Image.file(imageFile).image,
-              fit: BoxFit.fill,
+              fit: BoxFit.fitHeight,
             ),
           ),
           child: Painter(_controller)),
