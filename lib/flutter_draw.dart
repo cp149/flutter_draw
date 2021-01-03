@@ -25,10 +25,18 @@ PainterController _controller;
 setPaintController() {
   // this is for painter
   _controller = _newController();
+  _controller.backgroundColor = Colors.transparent;
 }
 
-File imageFile;
+File imageFile=null;
 
+setImageFile(file){
+  if (imageFile==null || imageFile.path!=file.path){
+    imageFile=file;
+    if(_controller!=null)
+    _controller.clear();
+  }
+}
 var rng = new Random();
 
 // this is for painter
@@ -72,12 +80,16 @@ Future<File> takeScreenshotAndSave() async {
 }
 
 _askPermission() async {
-  if (Platform.isIOS) {
-    /*Map<PermissionGroup, PermissionStatus> permissions =
-    */await PermissionHandler().requestPermissions([PermissionGroup.photos]);
-  } else {
-    /*PermissionStatus permission =*/ await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+  try {
+    if (Platform.isIOS) {
+      /*Map<PermissionGroup, PermissionStatus> permissions =
+    */ await PermissionHandler().requestPermissions([PermissionGroup.photos]);
+    } else {
+      /*PermissionStatus permission =*/ await PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.storage);
+    }
+  }catch(error){
+
   }
 }
 
@@ -110,6 +122,12 @@ class _HomePageState extends State<HomePage> {
       key: globalKey,
       child: Container(
           height: MediaQuery.of(context).size.height - 200,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: Image.file(imageFile).image,
+              fit: BoxFit.fill,
+            ),
+          ),
           child: Painter(_controller)),
     );
   }
@@ -337,7 +355,7 @@ class _BottomToolBarState extends State<BottomToolBar> {
                     color: Colors.blue,
                     width: MediaQuery.of(context).size.width / 5 - 1,
                     child: Icon(
-                      Icons.remove,
+                      Icons.remove_circle_rounded,
                       color: Colors.white,
                     ),
                   ),
