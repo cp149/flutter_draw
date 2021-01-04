@@ -83,10 +83,10 @@ _askPermission() async {
   try {
     if (Platform.isIOS) {
       /*Map<PermissionGroup, PermissionStatus> permissions =
-    */ await PermissionHandler().requestPermissions([PermissionGroup.photos]);
+    */ await Permission.photos.request();
     } else {
-      /*PermissionStatus permission =*/ await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
+      /*PermissionStatus permission =*/ await
+          Permission.storage.request();
     }
   }catch(error){
 
